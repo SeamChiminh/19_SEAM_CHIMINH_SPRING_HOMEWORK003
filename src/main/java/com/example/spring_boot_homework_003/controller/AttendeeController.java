@@ -4,6 +4,8 @@ import com.example.spring_boot_homework_003.model.Attendee;
 import com.example.spring_boot_homework_003.model.dao.AttendeeRequest;
 import com.example.spring_boot_homework_003.model.response.ApiResponse;
 import com.example.spring_boot_homework_003.service.AttendeeService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,7 @@ public class AttendeeController {
     }
 
     @GetMapping("/{attend-id}")
-    public ResponseEntity<ApiResponse<Attendee>> getAttendeeById(@PathVariable("attend-id") Integer attendId) {
+    public ResponseEntity<ApiResponse<Attendee>> getAttendeeById(@Positive @PathVariable("attend-id") Integer attendId) {
         ApiResponse<Attendee> apiResponse = ApiResponse.<Attendee>builder()
                 .message("The attendee has been successfully founded.")
                 .status(HttpStatus.OK)
@@ -43,7 +45,7 @@ public class AttendeeController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Attendee>> addAttendee(@RequestBody AttendeeRequest attendeeRequest) {
+    public ResponseEntity<ApiResponse<Attendee>> addAttendee(@Valid @RequestBody AttendeeRequest attendeeRequest) {
         ApiResponse<Attendee> apiResponse = ApiResponse.<Attendee>builder()
                 .message("The attendee has been successfully added.")
                 .status(HttpStatus.CREATED)
@@ -54,7 +56,7 @@ public class AttendeeController {
     }
 
     @PutMapping("/{attendee-id}")
-    public ResponseEntity<ApiResponse<Attendee>> updateAttendeeById(@PathVariable("attendee-id") Integer attendId, @RequestBody AttendeeRequest attendeeRequest) {
+    public ResponseEntity<ApiResponse<Attendee>> updateAttendeeById(@Positive @PathVariable("attendee-id") Integer attendId, @Valid @RequestBody AttendeeRequest attendeeRequest) {
         ApiResponse<Attendee> apiResponse = ApiResponse.<Attendee>builder()
                 .message("The attendee has been successfully updated.")
                 .status(HttpStatus.OK)
@@ -65,7 +67,7 @@ public class AttendeeController {
     }
 
     @DeleteMapping("/{attendee-id}")
-    public ResponseEntity<ApiResponse<Attendee>> deleteAttendeeById(@PathVariable("attendee-id") Integer attendId) {
+    public ResponseEntity<ApiResponse<Attendee>> deleteAttendeeById(@Positive @PathVariable("attendee-id") Integer attendId) {
         ApiResponse<Attendee> apiResponse = ApiResponse.<Attendee>builder()
                 .status(HttpStatus.OK)
                 .message("The attendee has been successfully deleted.")
@@ -75,13 +77,13 @@ public class AttendeeController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse<List<Attendee>>> getAttendeesByEventId(Integer attendId) {
-        ApiResponse<List<Attendee>> apiResponse = ApiResponse.<List<Attendee>>builder()
-                .message("The attendee has been successfully retrieved.")
-                .status(HttpStatus.OK)
-                .payload(attendeeService.getAttendeesByEventId(attendId))
-                .timestamp(LocalDateTime.now())
-                .build();
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
+//    public ResponseEntity<ApiResponse<List<Attendee>>> getAttendeesByEventId(Integer attendId) {
+//        ApiResponse<List<Attendee>> apiResponse = ApiResponse.<List<Attendee>>builder()
+//                .message("The attendee has been successfully retrieved.")
+//                .status(HttpStatus.OK)
+//                .payload(attendeeService.getAttendeesByEventId(attendId))
+//                .timestamp(LocalDateTime.now())
+//                .build();
+//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+//    }
 }

@@ -1,5 +1,6 @@
 package com.example.spring_boot_homework_003.service.impl;
 
+import com.example.spring_boot_homework_003.exception.NotFoundException;
 import com.example.spring_boot_homework_003.model.Events;
 import com.example.spring_boot_homework_003.model.dao.EventRequest;
 import com.example.spring_boot_homework_003.repository.AttendeeRepository;
@@ -26,7 +27,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Events getEventById(Integer eventId) {
-        return eventRepository.getEventById(eventId);
+        Events event = eventRepository.getEventById(eventId);
+        if (event == null) {
+            throw new NotFoundException("Event ID " + eventId + " not found.");
+        }
+        return event;
     }
 
     @Override
@@ -35,7 +40,7 @@ public class EventServiceImpl implements EventService {
         for(Integer attendeeId : eventRequest.getAttendeesId()){
             attendeeRepository.insertAttendeeIdAndEventIdToEventAttendeeTable(events.getEventId(), attendeeId);
         }
-        return getEventById(events.getEventId());
+        return events;
     }
 
     @Override
@@ -50,7 +55,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Events deleteEventById(Integer eventId) {
-        return eventRepository.deleteEventById(eventId);
+        Events events = eventRepository.deleteEventById(eventId);
+        if(events == null){
+            throw new NotFoundException("Event ID " + eventId + " not found.");
+        }
+        return events;
     }
 
 }

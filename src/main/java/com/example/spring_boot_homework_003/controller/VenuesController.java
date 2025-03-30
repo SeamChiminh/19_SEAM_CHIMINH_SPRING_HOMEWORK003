@@ -4,6 +4,8 @@ import com.example.spring_boot_homework_003.model.Venues;
 import com.example.spring_boot_homework_003.model.dao.VenuesRequest;
 import com.example.spring_boot_homework_003.model.response.ApiResponse;
 import com.example.spring_boot_homework_003.service.VenueService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,7 @@ public class VenuesController {
     }
 
     @GetMapping("/{venue-id}")
-    public ResponseEntity<ApiResponse<Venues>> getVenueById(@PathVariable("venue-id") Integer venueId) {
+    public ResponseEntity<ApiResponse<Venues>> getVenueById(@Positive @PathVariable("venue-id") Integer venueId) {
         ApiResponse<Venues> apiResponse = ApiResponse.<Venues>builder()
                 .message("The venue has been successfully founded.")
                 .status(HttpStatus.OK)
@@ -44,7 +46,7 @@ public class VenuesController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Venues>> addVenue(@RequestBody VenuesRequest venuesRequest) {
+    public ResponseEntity<ApiResponse<Venues>> addVenue(@Valid @RequestBody VenuesRequest venuesRequest) {
         ApiResponse<Venues> apiResponse = ApiResponse.<Venues>builder()
                 .message("The venue has been successfully added.")
                 .status(HttpStatus.CREATED)
@@ -55,7 +57,7 @@ public class VenuesController {
     }
 
     @PutMapping("/{venue-id}")
-    public ResponseEntity<ApiResponse<Venues>> updateVenueById(@PathVariable("venue-id") Integer venueId, @RequestBody VenuesRequest venuesRequest) {
+    public ResponseEntity<ApiResponse<Venues>> updateVenueById(@Positive @PathVariable("venue-id") Integer venueId, @Valid @RequestBody VenuesRequest venuesRequest) {
         ApiResponse<Venues> apiResponse = ApiResponse.<Venues>builder()
                 .message("The venue has been successfully updated.")
                 .status(HttpStatus.OK)
@@ -66,7 +68,7 @@ public class VenuesController {
     }
 
     @DeleteMapping("/{venue-id}")
-    public ResponseEntity<ApiResponse<Venues>> deleteVenueById(@PathVariable("venue-id") Integer venueId) {
+    public ResponseEntity<ApiResponse<Venues>> deleteVenueById(@Positive @PathVariable("venue-id") Integer venueId) {
         ApiResponse<Venues> apiResponse = ApiResponse.<Venues>builder()
                 .message("The venue has been successfully deleted.")
                 .status(HttpStatus.OK)
